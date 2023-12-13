@@ -17,7 +17,13 @@ class Booking(Base):
     status = Column(String)
 
     def __init__(self, Bookid, Roomid, Customerid, Bookdate, Checkin, Checkout, status):
-        pass
+        self.Bookid = Bookid
+        self.Roomid = Roomid
+        self.Customerid = Customerid
+        self.Bookdate = Bookdate
+        self.Checkin = Checkin
+        self.Checkout = Checkout
+        self.status = status
 
     def __repr__(self):
         pass
@@ -34,7 +40,12 @@ class Customer(Base):
     status = Column(String)
 
     def __init__(self, Customerid, Customername, address, phoneno, gender, status):
-        pass
+        self.Customerid = Customerid
+        self.Customername = Customername
+        self.address = address
+        self.phoneno = phoneno
+        self.gender = gender
+        self.status = status
 
     def __repr__(self):
         pass
@@ -50,7 +61,11 @@ class Employee(Base):
     status = Column(String)
 
     def __init__(self, employeeid, employeename, loginid, emptype, status):
-        pass
+        self.employeeid = employeeid
+        self.employeename = employeename
+        self.loginid = loginid
+        self.emptype = emptype
+        self.status = status
 
     def __repr__(self):
         pass
@@ -67,7 +82,12 @@ class Expense(Base):
     status = Column(String)
 
     def __init__(self, expenseid, employeeid, expensetype, expensemat, expensedate, status):
-        pass
+        self.expenseid = expenseid
+        self.employeeid = employeeid
+        self.expensetype = expensetype
+        self.expensemat = expensemat
+        self.expensedate = expensedate
+        self.status = status
 
     def __repr__(self):
         pass
@@ -83,7 +103,11 @@ class Item(Base):
     status = Column(String)
 
     def __init__(self, itemid, itemtype, itemname, itemcost, status):
-        pass
+        self.itemid = itemid
+        self.itemtype = itemtype
+        self.itemname = itemname
+        self.itemcost = itemcost
+        self.status = status
 
     def __repr__(self):
         pass
@@ -101,7 +125,13 @@ class Order(Base):
     status = Column(String)
 
     def __init__(self, orderid, itemid, Bookid, orderdate, quantity, cost, status):
-        pass
+        self.orderid = orderid
+        self.itemid = itemid
+        self.Bookid = Bookid
+        self.orderdate = orderdate
+        self.quantity = quantity
+        self.cost = cost
+        self.status = status
 
     def __repr__(self):
         pass
@@ -119,7 +149,13 @@ class Payment(Base):
     status = Column(String)
 
     def __init__(self, paymentid, Bookid, paymenttype, amount, paymentdetail, paymentdate, status):
-        pass
+        self.paymentid = paymentid
+        self.Bookid = Bookid
+        self.paymenttype = paymenttype
+        self.amount = amount
+        self.paymentdetail = paymentdetail
+        self.paymentdate = paymentdate
+        self.status = status
 
     def __repr__(self):
         pass
@@ -134,7 +170,10 @@ class Room(Base):
     status = Column(String)
 
     def __init__(self, Roomid, Roomtype, Roomnumber, status):
-        pass
+        self.Roomid = Roomid
+        self.Roomtype = Roomtype
+        self.Roomnumber = Roomnumber
+        self.status = status
 
     def __repr__(self):
         pass
@@ -149,7 +188,10 @@ class RoomType(Base):
     status = Column(String)
 
     def __init__(self, Roomtypeid, Roomtype, Cost, status):
-        pass
+        self.Roomtypeid = Roomtypeid
+        self.Roomtype = Roomtype
+        self.Cost = Cost
+        self.status = status
 
     def __repr__(self):
         pass
