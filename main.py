@@ -202,3 +202,7 @@ Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()
+
+customer = Customer('Eric', 'Nairobi', '0712324', 'male', 'available')
+session.add(customer)
+session.commit()
