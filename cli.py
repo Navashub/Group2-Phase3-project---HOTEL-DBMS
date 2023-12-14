@@ -89,5 +89,35 @@ def add_expense(employeeid, expensetype, expensemat, expensedate, status):
     click.echo("Expense added successfully.")
 
 
+@cli.command()
+@click.option("--roomid", prompt="Room ID", type=int, help="Room ID")
+@click.option("--customerid", prompt="Customer ID", type=int, help="Customer ID")
+@click.option("--bookdate", prompt="Booking Date", type=str, help="Booking Date")
+@click.option("--checkin", prompt="Check-in Date", type=str, help="Check-in Date")
+@click.option("--checkout", prompt="Check-out Date", type=str, help="Check-out Date")
+@click.option("--status", default="active", help="Booking Status (default: active)")
+def add_booking(roomid, customerid, bookdate, checkin, checkout, status):
+    try:
+        bookdate = datetime.strptime(bookdate, "%Y-%m-%d %H:%M:%S")
+        checkin = datetime.strptime(checkin, "%Y-%m-%d %H:%M:%S")
+        checkout = datetime.strptime(checkout, "%Y-%m-%d %H:%M:%S")
+
+        booking = Booking(
+            Roomid=roomid,
+            Customerid=customerid,
+            Bookdate=bookdate,
+            Checkin=checkin,
+            Checkout=checkout,
+            status=status
+        )
+
+        session.add(booking)
+        session.commit()
+        print("Booking added successfully!")
+    except Exception as e:
+        print(f"Error: {e}")
+        session.rollback()
+
+
 if __name__ == "__main__":
     cli()
