@@ -1,4 +1,5 @@
 import click
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from main import Base, Booking, Customer, Employee, Expense, Item, Order, Payment, Room, RoomType
@@ -58,6 +59,92 @@ def add_employee(employeename, loginid, emptype, status):
     session.add(employee)
     session.commit()
     click.echo("Employee added successfully.")
+
+
+@cli.command()
+@click.option("--employeeid", prompt="Employee ID", type=int, help="Employee ID")
+@click.option("--expensetype", prompt="Expense Type", help="Expense Type")
+@click.option("--expensemat", prompt="Expense Amount", help="Expense Amount")
+@click.option("--expensedate", prompt="Expense Date", help="Expense Date")
+@click.option("--status", default="pending", help="Expense Status (default: pending)")
+def add_expense(employeeid, expensetype, expensemat, expensedate, status):
+
+    try:
+        # Convert expensedate string to a datetime object
+        expensedate = datetime.strptime(expensedate, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        click.echo("Invalid date format. Please use YYYY-MM-DD HH:MM:SS.")
+        return
+
+    expense = Expense(
+        employeeid=employeeid,
+        expensetype=expensetype,
+        expensemat=expensemat,
+        expensedate=expensedate,
+        status=status
+    )
+
+    session.add(expense)
+    session.commit()
+    click.echo("Expense added successfully.")
+
+
+@cli.command()
+@click.option("--roomid", prompt="Room ID", type=int, help="Room ID")
+@click.option("--customerid", prompt="Customer ID", type=int, help="Customer ID")
+@click.option("--bookdate", prompt="Booking Date", type=str, help="Booking Date")
+@click.option("--checkin", prompt="Check-in Date", type=str, help="Check-in Date")
+@click.option("--checkout", prompt="Check-out Date", type=str, help="Check-out Date")
+@click.option("--status", default="active", help="Booking Status (default: active)")
+def add_booking(roomid, customerid, bookdate, checkin, checkout, status):
+    try:
+        bookdate = datetime.strptime(bookdate, "%Y-%m-%d %H:%M:%S")
+        checkin = datetime.strptime(checkin, "%Y-%m-%d %H:%M:%S")
+        checkout = datetime.strptime(checkout, "%Y-%m-%d %H:%M:%S")
+
+        booking = Booking(
+            Roomid=roomid,
+            Customerid=customerid,
+            Bookdate=bookdate,
+            Checkin=checkin,
+            Checkout=checkout,
+            status=status
+        )
+
+        session.add(booking)
+        session.commit()
+        print("Booking added successfully!")
+    except Exception as e:
+        print(f"Error: {e}")
+        session.rollback()
+
+@cli.command()
+@click.option("--roomtype", prompt="Room Type", help="Room Type")
+@click.option("--roomnumber", prompt="Room number", help="Room Price")
+@click.option("--status", default="active", help="Room Status (default: active)")
+def add_room( Roomtype, Roomnumber, status):
+    room = Room(
+        Roomtype=Roomtype,
+        Roomnumber=Roomnumber,
+        status=status
+    )
+    session.add(room)
+    session.commit()
+    click.echo("Room added successfully.")
+
+@cli.command()
+@click.option("--roomtype", prompt="Room Type", help="Room Type")
+@click.option("--roomprice", prompt="Room Price", help="Room Price")
+@click.option("--status", default="active", help="Room Status (default: active)")
+def add_roomtype(Roomtype, Roomprice, status):
+    roomtype = RoomType(
+        Roomtype=Roomtype,
+        Roomprice=Roomprice,
+        status=status
+    )
+    session.add(roomtype)
+    session.commit()
+    click.echo("Room Type added successfully.")
 
 
 if __name__ == "__main__":

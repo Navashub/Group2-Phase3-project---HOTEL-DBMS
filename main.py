@@ -73,15 +73,14 @@ class Employee(Base):
 class Expense(Base):
 
     __tablename__ = 'expenses'
-    expenseid = Column(Integer, primary_key=True)
+    expenseid = Column(Integer, primary_key=True, autoincrement=True)
     employeeid = Column(Integer, ForeignKey('employees.employeeid'))
     expensetype = Column(String)
     expensemat = Column(Float)
     expensedate = Column(DateTime)
     status = Column(String)
 
-    def __init__(self, expenseid, employeeid, expensetype, expensemat, expensedate, status):
-        self.expenseid = expenseid
+    def __init__(self, employeeid, expensetype, expensemat, expensedate, status):
         self.employeeid = employeeid
         self.expensetype = expensetype
         self.expensemat = expensemat
@@ -202,9 +201,12 @@ Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()
+<<<<<<< HEAD
 
 customer1 = Customer('Eric', 'Nairobi', '0712324', 'male', 'available')
 employee1 = Employee('Gordon Ramsey', '12vd12','Chef','Active')
 session.add(customer1)
 session.add(employee1)
 session.commit()
+=======
+>>>>>>> 2412cf297344663b2d87bd72655e150a121e804c
