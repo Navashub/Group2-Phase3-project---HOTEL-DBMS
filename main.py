@@ -1,6 +1,8 @@
-from sqlalchemy import Column, String, Integer, create_engine, VARCHAR, DATE, ForeignKey, Float
+from sqlalchemy import Column, String, Integer, create_engine, VARCHAR, DateTime, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+import argparse
+from datetime import datetime
 
 Base = declarative_base()
 
@@ -11,13 +13,12 @@ class Booking(Base):
     Bookid = Column(Integer, primary_key=True)
     Roomid = Column(Integer, ForeignKey('rooms.Roomid'))
     Customerid = Column(Integer, ForeignKey('customers.Customerid'))
-    Bookdate = Column(DATE)
-    Checkin = Column(DATE)
-    Checkout = Column(DATE)
+    Bookdate = Column(DateTime)
+    Checkin = Column(DateTime)
+    Checkout = Column(DateTime)
     status = Column(String)
 
-    def __init__(self, Bookid, Roomid, Customerid, Bookdate, Checkin, Checkout, status):
-        self.Bookid = Bookid
+    def __init__(self, Roomid, Customerid, Bookdate, Checkin, Checkout, status):
         self.Roomid = Roomid
         self.Customerid = Customerid
         self.Bookdate = Bookdate
@@ -39,8 +40,7 @@ class Customer(Base):
     gender = Column(String)
     status = Column(String)
 
-    def __init__(self, Customerid, Customername, address, phoneno, gender, status):
-        self.Customerid = Customerid
+    def __init__(self, Customername, address, phoneno, gender, status):
         self.Customername = Customername
         self.address = address
         self.phoneno = phoneno
@@ -54,14 +54,13 @@ class Customer(Base):
 class Employee(Base):
 
     __tablename__ = 'employees'
-    employeeid = Column(Integer, primary_key=True)
+    employeeid = Column(Integer, primary_key=True, autoincrement=True)
     employeename = Column(String)
     loginid = Column(VARCHAR(50))
     emptype = Column(String)
     status = Column(String)
 
-    def __init__(self, employeeid, employeename, loginid, emptype, status):
-        self.employeeid = employeeid
+    def __init__(self, employeename, loginid, emptype, status):
         self.employeename = employeename
         self.loginid = loginid
         self.emptype = emptype
@@ -78,7 +77,7 @@ class Expense(Base):
     employeeid = Column(Integer, ForeignKey('employees.employeeid'))
     expensetype = Column(String)
     expensemat = Column(Float)
-    expensedate = Column(DATE)
+    expensedate = Column(DateTime)
     status = Column(String)
 
     def __init__(self, expenseid, employeeid, expensetype, expensemat, expensedate, status):
@@ -119,7 +118,7 @@ class Order(Base):
     orderid = Column(Integer, primary_key=True)
     itemid = Column(Integer, ForeignKey('items.itemid'))
     Bookid = Column(Integer, ForeignKey('bookings.Bookid'))
-    orderdate = Column(DATE)
+    orderdate = Column(DateTime)
     quantity = Column(Float)
     cost = Column(Float)
     status = Column(String)
@@ -145,7 +144,7 @@ class Payment(Base):
     paymenttype = Column(VARCHAR(50))
     amount = Column(Float)
     paymentdetail = Column(String)
-    paymentdate = Column(DATE)
+    paymentdate = Column(DateTime)
     status = Column(String)
 
     def __init__(self, paymentid, Bookid, paymenttype, amount, paymentdetail, paymentdate, status):
@@ -195,12 +194,11 @@ class RoomType(Base):
 
     def __repr__(self):
         pass
-    
-    
-    
-engine = create_engine('sqlite://',
-                       echo=True)
+
+
+engine = create_engine("sqlite:///mydb.db", echo=True)
 
 Base.metadata.create_all(engine)
+
 Session = sessionmaker(bind=engine)
 session = Session()
