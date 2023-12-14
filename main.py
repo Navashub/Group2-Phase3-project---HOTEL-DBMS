@@ -73,7 +73,7 @@ class Employee(Base):
 class Expense(Base):
 
     __tablename__ = 'expenses'
-    expenseid = Column(Integer, primary_key=True)
+    expenseid = Column(Integer, primary_key=True, autoincrement=True)
     employeeid = Column(Integer, ForeignKey('employees.employeeid'))
     expensetype = Column(String)
     expensemat = Column(Float)

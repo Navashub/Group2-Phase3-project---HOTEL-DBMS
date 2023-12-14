@@ -59,6 +59,24 @@ def add_employee(employeename, loginid, emptype, status):
     session.commit()
     click.echo("Employee added successfully.")
 
+@cli.command()
+@click.option("--employeeid", prompt="Employee ID", type=int, help="Employee ID")
+@click.option("--expensetype", prompt="Expense Type", help="Expense Type")
+@click.option("--expensemat", prompt="Expense Amount", help="Expense Amount")
+@click.option("--expensedate", prompt="Expense Date", help="Expense Date")
+@click.option("--status", default="pending", help="Expense Status (default: pending)")
+def add_expense(employeeid, expensetype, expensemat,expensedate, status):
+    expense = Expense(
+        employeeid=employeeid,
+        expensetype=expensetype,
+        expensemat=expensemat,
+        expensedate=expensedate,
+        status=status
+    )
+    session.add(expense)
+    session.commit()
+    click.echo("Expense added successfully.")
+
 
 if __name__ == "__main__":
     cli()
