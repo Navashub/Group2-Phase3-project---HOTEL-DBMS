@@ -1,4 +1,5 @@
 import click
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from main import Base, Booking, Customer, Employee, Expense, Item, Order, Payment, Room, RoomType
@@ -59,13 +60,22 @@ def add_employee(employeename, loginid, emptype, status):
     session.commit()
     click.echo("Employee added successfully.")
 
+
 @cli.command()
 @click.option("--employeeid", prompt="Employee ID", type=int, help="Employee ID")
 @click.option("--expensetype", prompt="Expense Type", help="Expense Type")
 @click.option("--expensemat", prompt="Expense Amount", help="Expense Amount")
 @click.option("--expensedate", prompt="Expense Date", help="Expense Date")
 @click.option("--status", default="pending", help="Expense Status (default: pending)")
-def add_expense(employeeid, expensetype, expensemat,expensedate, status):
+def add_expense(employeeid, expensetype, expensemat, expensedate, status):
+
+    try:
+        # Convert expensedate string to a datetime object
+        expensedate = datetime.strptime(expensedate, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        click.echo("Invalid date format. Please use YYYY-MM-DD HH:MM:SS.")
+        return
+
     expense = Expense(
         employeeid=employeeid,
         expensetype=expensetype,
@@ -73,6 +83,7 @@ def add_expense(employeeid, expensetype, expensemat,expensedate, status):
         expensedate=expensedate,
         status=status
     )
+
     session.add(expense)
     session.commit()
     click.echo("Expense added successfully.")

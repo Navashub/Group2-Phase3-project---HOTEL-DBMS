@@ -80,8 +80,7 @@ class Expense(Base):
     expensedate = Column(DateTime)
     status = Column(String)
 
-    def __init__(self, expenseid, employeeid, expensetype, expensemat, expensedate, status):
-        self.expenseid = expenseid
+    def __init__(self, employeeid, expensetype, expensemat, expensedate, status):
         self.employeeid = employeeid
         self.expensetype = expensetype
         self.expensemat = expensemat
