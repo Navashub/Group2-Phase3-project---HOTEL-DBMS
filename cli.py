@@ -118,6 +118,34 @@ def add_booking(roomid, customerid, bookdate, checkin, checkout, status):
         print(f"Error: {e}")
         session.rollback()
 
+@cli.command()
+@click.option("--roomtype", prompt="Room Type", help="Room Type")
+@click.option("--roomnumber", prompt="Room number", help="Room Price")
+@click.option("--status", default="active", help="Room Status (default: active)")
+def add_room( Roomtype, Roomnumber, status):
+    room = Room(
+        Roomtype=Roomtype,
+        Roomnumber=Roomnumber,
+        status=status
+    )
+    session.add(room)
+    session.commit()
+    click.echo("Room added successfully.")
+
+@cli.command()
+@click.option("--roomtype", prompt="Room Type", help="Room Type")
+@click.option("--roomprice", prompt="Room Price", help="Room Price")
+@click.option("--status", default="active", help="Room Status (default: active)")
+def add_roomtype(Roomtype, Roomprice, status):
+    roomtype = RoomType(
+        Roomtype=Roomtype,
+        Roomprice=Roomprice,
+        status=status
+    )
+    session.add(roomtype)
+    session.commit()
+    click.echo("Room Type added successfully.")
+
 
 if __name__ == "__main__":
     cli()
