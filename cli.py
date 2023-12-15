@@ -146,40 +146,78 @@ def add_roomtype(Roomtype, Roomprice, status):
     session.commit()
     click.echo("Room Type added successfully.")
 
+@cli.command()
+@click.option("--paymenttype", prompt="Payment Type", help="Payment Type")
+@click.option("--amount", prompt="Amount", help="Amount")
+@click.option("--paymentdetail", prompt="Payment Detail", help="Payment Detail")
+@click.option("--paymentdate", prompt="Payment Date", help="Payment Date")
+@click.option("--status", default="pending", help="Payment Status")
+
+def add_payment(paymenttype,amount,paymentdetail,paymentdate,status):
+
+    try:
+        paymentdate = datetime.strptime(paymentdate, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        click.echo("Invalid date format. Please use YYYY-MM-DD HH:MM:SS.")
+        return
+    payment = Payment(
+        paymenttype=paymenttype,
+        amount=amount,
+        paymentdetail=paymentdetail,
+        paymentdate=paymentdate,
+        status=status,
+    )
+    session.add(payment)
+    session.commit()
+    click.echo("Payment added successfully.")
 
 @cli.command()
-@click.option("--orderid", prompt="Order Id", help="Order Id")
-@click.option("--itemid", prompt="Item Id", help="Item Id")
-@click.option("--Bookid", prompt="Book Id", help="Book Id")
+@click.option("--itemname", prompt="Item Name", help="Item Name")
+@click.option("--itemcost", prompt="Item Cost", help="Item Cost")
+@click.option("--status", default="active", help="Item Status (default: active)")
+def add_item(itemname, itemcost, status):
+    item = Item(
+        itemname=itemname,
+        itemcost=itemcost,
+        status=status
+    )
+    session.add(item)
+    session.commit()
+    click.echo("Item added successfully.")
+
+@cli.command()
+@click.option("--ordernumber", prompt="Order Number", help="Order Number")
+@click.option("--itemid", prompt="Item ID", help="Item ID")
+@click.option("--Bookid", prompt="Booking ID", help="Booking ID")
 @click.option("--orderdate", prompt="Order Date", help="Order Date")
 @click.option("--quantity", prompt="Quantity", help="Quantity")
 @click.option("--cost", prompt="Cost", help="Cost")
-@click.option("--status", default="active", help="Order's Status (default: active)")
-def add_order(orderid, itemid, Bookid, orderdate, quantity, cost, status):
+@click.option("--status", default="pending", help="Order Status (default: pending)")
+def add_order(
+    ordernumber: int,
+    itemid: int,
+    Bookid: int,
+    orderdate: str,
+    quantity: float,
+    cost: float,
+    status: str = "pending",
+):
     try:
-        # Remove leading and trailing spaces from orderdate
-        orderdate = orderdate.strip()
-        
         orderdate = datetime.strptime(orderdate, "%Y-%m-%d %H:%M:%S")
-        quantity = int(quantity)
-        cost = float(cost)
-    except ValueError as e:
-        click.echo(f"Error: {e}")
+    except ValueError:
+        click.echo("Invalid date format. Please use YYYY-MM-DD HH:MM:SS.")
         return
-
     order = Order(
-        orderid=orderid,
+        ordernumber=ordernumber,
         itemid=itemid,
         Bookid=Bookid,
         orderdate=orderdate,
         quantity=quantity,
         cost=cost,
-        status=status
+        status=status,
     )
     session.add(order)
     session.commit()
     click.echo("Order added successfully.")
-
-
 if __name__ == "__main__":
     cli()
