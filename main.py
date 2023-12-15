@@ -116,16 +116,16 @@ class Order(Base):
     __tablename__ = 'orders'
     orderid = Column(Integer, primary_key=True)
     itemid = Column(Integer, ForeignKey('items.itemid'))
-    bookid = Column(Integer, ForeignKey('bookings.Bookid'))
+    Bookid = Column(Integer, ForeignKey('bookings.Bookid'))
     orderdate = Column(DateTime)
     quantity = Column(Float)
     cost = Column(Float)
     status = Column(String)
 
-    def __init__(self, orderid, itemid, bookid, orderdate, quantity, cost, status):
+    def __init__(self, orderid, itemid, Bookid, orderdate, quantity, cost, status):
         self.orderid = orderid
         self.itemid = itemid
-        self.bookid = bookid
+        self.Bookid = Bookid
         self.orderdate = orderdate
         self.quantity = quantity
         self.cost = cost

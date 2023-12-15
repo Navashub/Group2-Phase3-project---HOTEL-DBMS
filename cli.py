@@ -150,12 +150,12 @@ def add_roomtype(Roomtype, Roomprice, status):
 @cli.command()
 @click.option("--orderid", prompt="Order Id", help="Order Id")
 @click.option("--itemid", prompt="Item Id", help="Item Id")
-@click.option("--bookid", prompt="Book Id", help="Book Id")
+@click.option("--Bookid", prompt="Book Id", help="Book Id")
 @click.option("--orderdate", prompt="Order Date", help="Order Date")
 @click.option("--quantity", prompt="Quantity", help="Quantity")
 @click.option("--cost", prompt="Cost", help="Cost")
 @click.option("--status", default="active", help="Order's Status (default: active)")
-def add_customer(orderid, itemid, bookid, orderdate, quantity, cost, status):
+def add_order(orderid, itemid, Bookid, orderdate, quantity, cost, status):
     try:
         # Remove leading and trailing spaces from orderdate
         orderdate = orderdate.strip()
@@ -170,7 +170,7 @@ def add_customer(orderid, itemid, bookid, orderdate, quantity, cost, status):
     order = Order(
         orderid=orderid,
         itemid=itemid,
-        bookid=bookid,
+        Bookid=Bookid,
         orderdate=orderdate,
         quantity=quantity,
         cost=cost,
