@@ -157,7 +157,7 @@ def add_roomtype(Roomtype, Roomprice, status):
 @click.option("--status", default="active", help="Order's Status (default: active)")
 def add_customer(orderid, itemid, bookid, orderdate, quantity, cost, status):
     try:
-        # Remove leading and trailing spaces from orderdate
+# Remove leading and trailing spaces from orderdate
         orderdate = orderdate.strip()
         
         orderdate = datetime.strptime(orderdate, "%Y-%m-%d %H:%M:%S")
