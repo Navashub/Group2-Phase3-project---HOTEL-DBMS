@@ -119,5 +119,136 @@ def add_booking(roomid, customerid, bookdate, checkin, checkout, status):
         session.rollback()
 
 
-if __name__ == "__main__":
+@cli.command()
+@click.option("--roomtype", prompt="Room Type", help="Room Type")
+@click.option("--roomnumber", prompt="Room number", help="Room Price")
+@click.option("--status", default="active", help="Room Status (default: active)")
+def add_room(Roomtype, Roomnumber, status):
+    room = Room(
+        Roomtype=Roomtype,
+        Roomnumber=Roomnumber,
+        status=status
+    )
+    session.add(room)
+    session.commit()
+    click.echo("Room added successfully.")
+
+
+@cli.command()
+@click.option("--roomtype", prompt="Room Type", help="Room Type")
+@click.option("--roomprice", prompt="Room Price", help="Room Price")
+@click.option("--status", default="active", help="Room Status (default: active)")
+def add_roomtype(Roomtype, Roomprice, status):
+    roomtype = RoomType(
+        Roomtype=Roomtype,
+        Roomprice=Roomprice,
+        status=status
+    )
+    session.add(roomtype)
+    session.commit()
+    click.echo("Room Type added successfully.")
+
+
+@cli.command()
+@click.option("--paymenttype", prompt="Payment Type", help="Payment Type")
+@click.option("--amount", prompt="Amount", help="Amount")
+@click.option("--paymentdetail", prompt="Payment Detail", help="Payment Detail")
+@click.option("--paymentdate", prompt="Payment Date", help="Payment Date")
+@click.option("--status", default="pending", help="Payment Status")
+def add_payment(paymenttype, amount, paymentdetail, paymentdate, status):
+
+    try:
+        paymentdate = datetime.strptime(paymentdate, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        click.echo("Invalid date format. Please use YYYY-MM-DD HH:MM:SS.")
+        return
+    payment = Payment(
+        paymenttype=paymenttype,
+        amount=amount,
+        paymentdetail=paymentdetail,
+        paymentdate=paymentdate,
+        status=status,
+    )
+    session.add(payment)
+    session.commit()
+    click.echo("Payment added successfully.")
+
+
+@cli.command()
+@click.option("--itemname", prompt="Item Name", help="Item Name")
+@click.option("--itemcost", prompt="Item Cost", help="Item Cost")
+@click.option("--status", default="active", help="Item Status (default: active)")
+def add_item(itemname, itemcost, status):
+    item = Item(
+        itemname=itemname,
+        itemcost=itemcost,
+        status=status
+    )
+    session.add(item)
+    session.commit()
+    click.echo("Item added successfully.")
+
+
+@cli.command()
+@click.option("--ordernumber", prompt="Order Number", help="Order Number")
+@click.option("--itemid", prompt="Item ID", help="Item ID")
+@click.option("--Bookid", prompt="Booking ID", help="Booking ID")
+@click.option("--orderdate", prompt="Order Date", help="Order Date")
+@click.option("--quantity", prompt="Quantity", help="Quantity")
+@click.option("--cost", prompt="Cost", help="Cost")
+@click.option("--status", default="pending", help="Order Status (default: pending)")
+def add_order(
+    ordernumber: int,
+    itemid: int,
+    Bookid: int,
+    orderdate: str,
+    quantity: float,
+    cost: float,
+    status: str = "pending",
+):
+    try:
+        orderdate = datetime.strptime(orderdate, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        click.echo("Invalid date format. Please use YYYY-MM-DD HH:MM:SS.")
+        return
+    order = Order(
+        ordernumber=ordernumber,
+        itemid=itemid,
+        Bookid=Bookid,
+        orderdate=orderdate,
+        quantity=quantity,
+        cost=cost,
+        status=status,
+    )
+    session.add(order)
+    session.commit()
+    click.echo("Order added successfully.")
+
+
+@cli.command()
+@click.option('--booking-id', type=int, prompt='Booking ID', help='Booking ID for the payment')
+@click.option('--payment-type', type=str, prompt='Payment Type', help='Payment type')
+@click.option('--amount', type=float, prompt='Amount', help='Payment amount')
+@click.option('--payment-detail', type=str, prompt='Payment Detail', help='Payment detail')
+@click.option('--payment-date', type=str, prompt='Payment Date (YYYY-MM-DD HH:MM:SS)', help='Payment date')
+def add_payment(booking_id, payment_type, amount, payment_detail, payment_date):
+    booking = session.query(Booking).get(booking_id)
+
+    if booking:
+        payment = Payment(
+            Bookid=booking.Bookid,
+            paymenttype=payment_type,
+            amount=amount,
+            paymentdetail=payment_detail,
+            paymentdate=payment_date,
+            status='Paid'
+        )
+        session.add(payment)
+        session.commit()
+        click.echo(f'Payment of ${amount} added for Booking ID {booking_id}')
+    else:
+        click.echo(f'Booking ID {booking_id} not found')
+
+
+if __name__ == '__main__':
     cli()

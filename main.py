@@ -116,16 +116,16 @@ class Order(Base):
     __tablename__ = 'orders'
     orderid = Column(Integer, primary_key=True)
     itemid = Column(Integer, ForeignKey('items.itemid'))
-    Bookid = Column(Integer, ForeignKey('bookings.Bookid'))
+    bookid = Column(Integer, ForeignKey('bookings.Bookid'))
     orderdate = Column(DateTime)
     quantity = Column(Float)
     cost = Column(Float)
     status = Column(String)
 
-    def __init__(self, orderid, itemid, Bookid, orderdate, quantity, cost, status):
+    def __init__(self, orderid, itemid, bookid, orderdate, quantity, cost, status):
         self.orderid = orderid
         self.itemid = itemid
-        self.Bookid = Bookid
+        self.bookid = bookid
         self.orderdate = orderdate
         self.quantity = quantity
         self.cost = cost
@@ -201,3 +201,21 @@ Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()
+#customer = Customer('Jane', 'Nairobi', '0712324', 'female', 'unavailable')
+#employee= Employee('John Maina', '12W13','Waiter','Active')
+#item = Item(1, 'Food', 'Pizza', 3000, 'Active')
+#room= Room(1, 'Single', '101', 'Active')
+#room = Room(2, 'Double', '102', 'inActive')
+#booking = Booking(1, 1, '2021-05-20', '2021-05-21', '2021-05-22', 'Active')
+#expense = Expense(1, 'Food', 3000, '2021-05-20', 'Active')
+payment = Payment(1, 1, 'Cash', 30000, 'Paid', '2021-05-20', 'active')
+#payment = Payment(2, 2, 'Cash', 2000, 'Paid', '2021-05-20', 'pending')
+#order = Order(1, 1, 1, '2021-05-20', 2, 6000, 'Active')
+#session.add(customer)
+#session.add(order)
+#session.add(employee)
+session.add(payment)
+#session.add(room)
+#session.add(roomtype)
+#session.add(booking)
+session.commit()
