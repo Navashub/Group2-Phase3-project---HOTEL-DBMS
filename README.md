@@ -74,7 +74,7 @@ This component, developed by Navas Herbert, manages the booking information in t
 
 # Our PATRON
 
-[Khalifa Muyideen](https://github.com/dixon400)
+[Khalifa Muyideen](https://github.com/dixon400) - Very vital in the project surpervision.
 
 ## Getting Started
 
